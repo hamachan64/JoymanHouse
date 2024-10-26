@@ -42,8 +42,8 @@ public class AvaterManager : MonoBehaviour
         //// ƒXƒCƒ}ƒƒ“•¶Í‚È‚ç
         //if ()
         //{
-        //    _animator.SetBool("Suimamen", true);
-        //    StartCoroutine(WaitForAudioEnd("Suimamen"));
+        //_animator.SetBool("Suimamen", true);
+        //StartCoroutine(WaitForAudioEnd("Suimamen"));
         //}
     }
 
