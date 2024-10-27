@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class AvaterManager : MonoBehaviour
@@ -8,6 +9,12 @@ public class AvaterManager : MonoBehaviour
     Animator _animator;
 
     [SerializeField] AudioClip _audioClip;
+
+    string serverIp = "127.0.0.1"; // サーバーのIPアドレス
+    int port = 12345; // サーバーのポート番号
+
+    //実行したいfileを指定
+    [SerializeField] string pythonFilePath = "path/to/your_script.py";
 
     void Start()
     {
@@ -50,5 +57,32 @@ public class AvaterManager : MonoBehaviour
 
         // 音源が終了したらこの関数が呼ばれる
         _animator.SetBool(pram, false);
+
+        RunPythonScript(pythonFilePath);
+    }
+
+    void RunPythonScript(string filePath)
+    {
+        // Pythonの実行ファイルのパスを指定
+        string pythonPath = @"C:\Python39\python.exe";
+
+        // プロセス情報を設定
+        ProcessStartInfo psi = new ProcessStartInfo
+        {
+            FileName = pythonPath,
+            Arguments = $"\"{filePath}\"",  // 引数としてPythonファイルのパスを指定
+            RedirectStandardOutput = true,  // 標準出力をリダイレクト
+            UseShellExecute = false,        // シェルを使わない
+            CreateNoWindow = true           // 新しいウィンドウを作成しない
+        };
+
+        // プロセスを実行
+        using (Process process = Process.Start(psi))
+        {
+            // 標準出力を読み取り
+            string output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();  // Pythonスクリプトの実行が終わるまで待機
+            UnityEngine.Debug.Log("Python script output: " + output);  // 結果をUnityのコンソールに表示
+        }
     }
 }
