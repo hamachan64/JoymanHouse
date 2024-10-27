@@ -12,16 +12,8 @@ public class TimeManager : MonoBehaviour
     //DateTime‚ğg‚¤‚½‚ß•Ï”‚ğİ’è
     DateTime TodayNow;
 
-    public bool flag;
-    public string content;
-
     void Update()
     {
-        if (flag)
-        {
-            _text.text = content;
-            flag = false;
-        }
         //ŠÔ‚ğæ“¾
         TodayNow = DateTime.Now;
 

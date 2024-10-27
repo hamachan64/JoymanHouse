@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private ConcurrentQueue<string> audioFileQueue = new ConcurrentQueue<string>();
 
     [SerializeField] TextManager texttext;
+
+
     void Start()
     {
 
@@ -82,7 +84,6 @@ public class GameManager : MonoBehaviour
 
         texttext.flag = true;
         texttext.content = fileContent;
-        Debug.Log("ss");
     }
 
     void Update()
@@ -97,6 +98,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator LoadAudioClip(string filePath)
     {
         string url = "file:///" + filePath;
+        // ファイル名に応じて表情を変化させるため、ファイル名取得
+        string fileName = Path.GetFileName(filePath);
 
         using (WWW www = new WWW(url))
         {
@@ -104,7 +107,7 @@ public class GameManager : MonoBehaviour
             _audioClip = www.GetAudioClip(true, true);
 
             // アニメーション再生
-            _avaterManager.GetAudioText(_audioClip);
+            _avaterManager.GetAudioText(_audioClip, fileName);
 
             Debug.Log("New audio file played: " + filePath);
         }
