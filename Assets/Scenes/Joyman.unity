@@ -218,7 +218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u304A\u306F\u3088\u3046\u3001\u304A\u306F\u3088\u3046\u3001\u592A\u967D\u3001\u30AB\u30B2\u30ED\u30A6~\n\u30CA\u30CA\u30CA\u30CA~\u3001nananana~\u3001\u306A\u306A\u306A\u8EDF\u9AA8~"
+  m_text: "\u3054\u6E05\u8074~\u3001\u3042\u308A\u304C\u3068\u3046~\n\u3042\u308A\u304C\u3068\u3046\uFF01\u3000\u30AA\u30EA\u30B4\u7CD6\uFF01"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 37236c3ba1c7bd24fa91945b5ee958db, type: 2}
   m_sharedMaterial: {fileID: 4965594838722104137, guid: 37236c3ba1c7bd24fa91945b5ee958db, type: 2}

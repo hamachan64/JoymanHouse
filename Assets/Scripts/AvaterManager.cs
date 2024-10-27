@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Sockets;
+using System.Text;
 using UnityEngine;
 
 public class AvaterManager : MonoBehaviour
@@ -58,31 +61,40 @@ public class AvaterManager : MonoBehaviour
         // 音源が終了したらこの関数が呼ばれる
         _animator.SetBool(pram, false);
 
-        RunPythonScript(pythonFilePath);
+        RunPythonScript();
     }
 
-    void RunPythonScript(string filePath)
+    void RunPythonScript()
     {
-        // Pythonの実行ファイルのパスを指定
-        string pythonPath = @"C:\Python39\python.exe";
-
-        // プロセス情報を設定
-        ProcessStartInfo psi = new ProcessStartInfo
+        try
         {
-            FileName = pythonPath,
-            Arguments = $"\"{filePath}\"",  // 引数としてPythonファイルのパスを指定
-            RedirectStandardOutput = true,  // 標準出力をリダイレクト
-            UseShellExecute = false,        // シェルを使わない
-            CreateNoWindow = true           // 新しいウィンドウを作成しない
-        };
+            // ソケットの作成
+            TcpClient client = new TcpClient(serverIp, port);
+            Console.WriteLine("サーバーに接続しました");
 
-        // プロセスを実行
-        using (Process process = Process.Start(psi))
+            // ネットワークストリームを取得
+            NetworkStream stream = client.GetStream();
+
+            // サーバーに送信するメッセージ
+            string message = "Hello, Server!";
+            byte[] data = Encoding.UTF8.GetBytes(message);
+
+            // メッセージをサーバーに送信
+            stream.Write(data, 0, data.Length);
+            Console.WriteLine("サーバーにメッセージを送信しました: " + message);
+
+            // サーバーからの応答を受信
+            byte[] responseData = new byte[256];
+            int bytes = stream.Read(responseData, 0, responseData.Length);
+            string response = Encoding.UTF8.GetString(responseData, 0, bytes);
+            Console.WriteLine("サーバーからの応答: " + response);
+            // ストリームとクライアントをクローズ
+            stream.Close();
+            client.Close();
+        }
+        catch (Exception e)
         {
-            // 標準出力を読み取り
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();  // Pythonスクリプトの実行が終わるまで待機
-            UnityEngine.Debug.Log("Python script output: " + output);  // 結果をUnityのコンソールに表示
+            Console.WriteLine("エラーが発生しました: " + e.Message);
         }
     }
 }
