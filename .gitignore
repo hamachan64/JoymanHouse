@@ -72,3 +72,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 /[Aa]ssets/Import
+/[Aa]ssets/Avater/Fairy
+/[Aa]ssets/Avater/Ikemen
+/[Aa]ssets/Avater/Rikka

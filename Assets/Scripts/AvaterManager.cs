@@ -13,6 +13,8 @@ public class AvaterManager : MonoBehaviour
 
     [SerializeField] AudioClip _audioClip;
 
+    public string avaterRequest;
+
     string serverIp = "127.0.0.1"; // サーバーのIPアドレス
     int port = 12345; // サーバーのポート番号
 
@@ -23,6 +25,11 @@ public class AvaterManager : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
+
+        if(avaterRequest == null)
+        {
+            avaterRequest = "Zundamon";
+        }
     }
 
     // ChatGPTから音声テキストを受信
@@ -38,22 +45,32 @@ public class AvaterManager : MonoBehaviour
         _audioSource.PlayOneShot(_audioClip);
 
 
-        // ななな文章なら
         if (filename == "bando.wav")
         {
             _animator.SetBool("Nanana", true);
-            StartCoroutine(WaitForAudioEnd("Nanana"));
-        }
-
-        // スイマメン文章なら
-        if (filename == "suimamen.wav")
+            StartCoroutine(WaitSpecialAudioEnd("Nanana"));
+        }else if (filename == "suimamen.wav")
         {
             _animator.SetBool("Suimamen", true);
-            StartCoroutine(WaitForAudioEnd("Suimamen"));
+            StartCoroutine(WaitSpecialAudioEnd("Suimamen"));
+        }
+        else if (filename == "angry.wav")
+        {
+            _animator.SetBool("Angry", true);
+            StartCoroutine(WaitSpecialAudioEnd("Angry"));
+        }
+        else if (filename == "Happy.wav")
+        {
+            _animator.SetBool("Happy", true);
+            StartCoroutine(WaitSpecialAudioEnd("Happy"));
+        }
+        else
+        {
+            StartCoroutine(WaitNormalAudioEnd());
         }
     }
 
-    private IEnumerator WaitForAudioEnd(string pram)
+    private IEnumerator WaitSpecialAudioEnd(string pram)
     {
         // 音源が再生終了するまで待機
         yield return new WaitUntil(() => !_audioSource.isPlaying);
@@ -61,10 +78,18 @@ public class AvaterManager : MonoBehaviour
         // 音源が終了したらこの関数が呼ばれる
         _animator.SetBool(pram, false);
 
-        RunPythonScript();
+        RunPythonScript("Hello, Server!");
     }
 
-    void RunPythonScript()
+    private IEnumerator WaitNormalAudioEnd()
+    {
+        // 音源が再生終了するまで待機
+        yield return new WaitUntil(() => !_audioSource.isPlaying);
+
+        RunPythonScript("Hello, Server!");
+    }
+
+    public void RunPythonScript(string sendMessage)
     {
         try
         {
@@ -76,7 +101,7 @@ public class AvaterManager : MonoBehaviour
             NetworkStream stream = client.GetStream();
 
             // サーバーに送信するメッセージ
-            string message = "Hello, Server!";
+            string message = sendMessage;
             byte[] data = Encoding.UTF8.GetBytes(message);
 
             // メッセージをサーバーに送信

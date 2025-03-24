@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] AvaterManager _avaterManager;
+    public AvaterManager _avaterManager;
     [SerializeField] TextMeshProUGUI _textMeshProUGUI;
 
     AudioClip _audioClip;
